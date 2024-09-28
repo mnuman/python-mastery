@@ -1,0 +1,17 @@
+# git .config settings - see https://mastodon.nl/@b0rk@jvns.ca/111885365343016829
+[credential]
+    helper = store
+[user]
+    name = Milco Numan
+    email = ...
+[http]
+    followRedirects = true
+[commit]
+    verbose = true
+[pull]
+    ff = only                      # no merge commit from upstream in current allowed
+[merge]
+    conflictStyle = zdiff3         # zdiff3 conflict style
+[push]
+    autoSetupRemote = true         # automatically setup remote branch with same name
+    default = current              # use matching names on local and remote when pushing
