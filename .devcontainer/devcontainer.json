@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "Python 3.12",
+	// Latest Python 3 container
+	"image": "mcr.microsoft.com/vscode/devcontainers/python:3",
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.black-formatter",
+				"ms-python.flake8",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+			]
+		}
+	},
+	// https://github.com/microsoft/vscode-remote-release/issues/2485#issuecomment-1722584736
+	"runArgs": ["--name", "python-mastery"],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "pip3 install -r ${containerWorkspaceFolder}/requirements.txt"
+}
