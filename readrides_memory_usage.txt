@@ -1,0 +1,9 @@
+(1) Memory Use - tuples:      Current 114729038, Peak 114755944
+(2) Memory Use - class slots: Current 120638529, Peak 120665391
+(3) Memory Use - namedtuple:  Current 129879657, Peak 129906519
+(4) Memory Use - class:       Current 139123305, Peak 139150167
+(4) Memory Use - dataclass:   Current 139123305, Peak 139150167
+(6) Memory Use - dict:        Current 189936577, Peak 189963439
+
+Tuples have the least overhead, dicts the most. Dataclass does not do anything 
+for storage overhead.
