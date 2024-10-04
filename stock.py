@@ -47,6 +47,14 @@ class Stock:
     def cost(self):
         return self.shares * self.price
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.name!r}, {self.shares!r}, {self.price!r})'
+
+    def __eq__(self, other):
+        return isinstance(other, Stock) and (
+            (self.name, self.shares, self.price) ==
+            (other.name, other.shares, other.price))
+
 
 def read_portfolio(filename):
     global headers
@@ -56,9 +64,3 @@ def read_portfolio(filename):
         headers = next(rows)  # Skip the header row
         portfolio = [Stock.from_row(row) for row in rows]
     return portfolio
-
-
-
-if __name__ == '__main__':
-    portfolio = read_portfolio('Data/portfolio.csv')
-    print_portfolio(portfolio)
