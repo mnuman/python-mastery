@@ -58,12 +58,6 @@ def read_portfolio(filename):
     return portfolio
 
 
-def print_portfolio(portfolio):
-    # print(f"{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s}")
-    # print(('-'*10 + ' ')*3)
-    for s in portfolio:
-        print(f"{s.name:>10s} {s.shares:>10d} {s.price:>10.2f}")
-
 
 if __name__ == '__main__':
     portfolio = read_portfolio('Data/portfolio.csv')
