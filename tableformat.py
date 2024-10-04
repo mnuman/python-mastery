@@ -1,9 +1,14 @@
-class TableFormatter:
-    def headings(self, headers):
-        raise NotImplementedError()
+from abc import ABC, abstractmethod
 
+
+class TableFormatter(ABC):
+    @abstractmethod
+    def headings(self, headers):
+        ...
+
+    @abstractmethod
     def row(self, rowdata):
-        raise NotImplementedError()
+        ...
 
 
 class CSVTableFormatter(TableFormatter):
@@ -34,6 +39,8 @@ class TextTableFormatter(TableFormatter):
 
 
 def print_table(records, fields, formatter):
+    if not isinstance(formatter, TableFormatter):
+        raise TypeError('Expected a TableFormatter')
     formatter.headings(fields)
     for r in records:
         rowdata = [getattr(r, fieldname) for fieldname in fields]
