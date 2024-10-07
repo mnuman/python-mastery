@@ -12,8 +12,12 @@ def convert_csv(lines, converter, *, headers=None):
 
 
 def csv_as_dicts(lines, types, *, headers=None):
-    return convert_csv(lines,
-                       lambda headers, row: {name: func(val) for name, func, val in zip(headers, types, row)})
+    return convert_csv(
+        lines,
+        lambda headers, row: {
+            name: func(val) for name, func, val in zip(headers, types, row)
+        }
+    )
 
 
 def csv_as_instances(lines, cls, *, headers=None):
