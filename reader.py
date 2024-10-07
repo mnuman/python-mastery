@@ -1,40 +1,37 @@
 import csv
+from tkinter import SE
 from typing import Callable, ClassVar, Dict, List, Optional, Sequence, Type
 
 
-def csv_as_dicts(lines: Sequence, types: List[Callable], headers: Optional[List[str]] = None) -> Sequence[Dict]:
-    '''
-    Convert lines of CSV text into a list of dictionaries
-    '''
-    records = []
+def convert_csv(lines, converter, *, headers=None):
     rows = csv.reader(lines)
-    # design challenge - headers may be present in the file
-    # otherwise we will use the first row as headers
     if headers is None:
         headers = next(rows)
-    for row in rows:
-        record = {name: func(val)
-                  for name, func, val in zip(headers, types, row)}
-        records.append(record)
-    return records
+    # type: ignore
+    return list(map(lambda row: converter(headers, row), rows))
 
 
-def csv_as_instances(lines: Sequence, cls: Type) -> Sequence[Type]:
+def csv_as_dicts(lines, types, *, headers=None):
+    return convert_csv(lines,
+                       lambda headers, row: {name: func(val) for name, func, val in zip(headers, types, row)})
+
+
+def csv_as_instances(lines, cls, *, headers=None):
+    return convert_csv(lines,
+                       lambda headers, row: cls.from_row(row))
+
+
+def read_csv_as_dicts(filename, types, *, headers=None):
     '''
-    Convert lines of CSV text into a list of instances
+    Read CSV data into a list of dictionaries with optional type conversion
     '''
-    records = []
-    rows = csv.reader(lines)
-    _ = next(rows)
-    for row in rows:
-        record = cls.from_row(row)
-        records.append(record)
-    return records
+    with open(filename) as file:
+        return csv_as_dicts(file, types, headers=headers)
 
 
-def read_csv_as_dicts(filename: str, types: List[Callable]) -> Sequence[Dict]:
-    return csv_as_dicts(open(filename), types)  # type: ignore
-
-
-def read_csv_as_instances(filename: str, cls: Type) -> Sequence[Type]:
-    return csv_as_instances(open(filename), cls)    # type: ignore
+def read_csv_as_instances(filename, cls, *, headers=None):
+    '''
+    Read CSV data into a list of instances
+    '''
+    with open(filename) as file:
+        return csv_as_instances(file, cls, headers=headers)
