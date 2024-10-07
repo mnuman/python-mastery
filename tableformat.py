@@ -47,12 +47,34 @@ def print_table(records, fields, formatter):
         formatter.row(rowdata)
 
 
-def create_formatter(format):
-    if format == 'csv':
-        return CSVTableFormatter()
-    elif format == 'html':
-        return HTMLTableFormatter()
-    elif format == 'text':
-        return TextTableFormatter()
+def create_formatter(name, column_formats=None, upper_headers=False):
+    if name == 'csv':
+        formatter_class = CSVTableFormatter
+    elif name == 'html':
+        formatter_class = HTMLTableFormatter
+    elif name == 'text':
+        formatter_class = TextTableFormatter
     else:
         raise RuntimeError(f'Unknown format {format}')
+    if column_formats:
+        class formatter_class(ColumnFormatMixin, formatter_class):  # type: ignore
+            formats = column_formats
+
+    if upper_headers:
+        class formatter_class(UpperHeadersMixin, formatter_class):  # type: ignore
+            pass
+
+    return formatter_class()
+
+
+class ColumnFormatMixin:
+    formats = []
+
+    def row(self, rowdata):
+        rowdata = [(fmt % d) for fmt, d in zip(self.formats, rowdata)]
+        super().row(rowdata)     # type: ignore
+
+
+class UpperHeadersMixin:
+    def headings(self, headers):
+        super().headings([h.upper() for h in headers])
